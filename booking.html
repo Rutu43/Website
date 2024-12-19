@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Here</title>
+    <link rel="icon" href="./assets/files/logo.png" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/booking.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Paytone+One&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div>
+        <nav>
+            <img src="./assets/files/logo.png" class="logo" alt="Logo" title="FirstFlight Travels">
+            <ul class="navbar">
+                <li>
+                    <a href="index.html">Home</a>
+                    <a href="./index.html#package">Packages</a>
+                    <a href="./index.html#locations">Locations</a>
+                    <a href="./info.html">About Us</a>
+                    <a href="./contact.html">Contact Us</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="booking">
+        <h1>Booking Online Now</h1>
+        <p>Please fill out this form with the required information</p>
+        <form action="booking.php" method="POST">
+            <fieldset>
+                <label>First Name: *
+                    <input type="text" id="firstname" name="firstname" placeholder="Enter first name" required />
+                    <button type="button" onclick="startSpeech('firstname')">🎤</button>
+                </label>
+                <label>Last Name: *
+                    <input type="text" id="lastname" name="lastname" placeholder="Enter last name" required />
+                    <button type="button" onclick="startSpeech('lastname')">🎤</button>
+                </label>
+                <label>Email: *
+                    <input type="email" id="email" name="email" placeholder="Enter Email" required />
+                    <button type="button" onclick="startSpeech('email')">🎤</button>
+                </label>
+                <label>Phone Number: *
+                    <input type="text" id="phone" name="phone" placeholder="Enter Phone number" required />
+                    <button type="button" onclick="startSpeech('phone')">🎤</button>
+                </label>
+
+                <label>Check-in Date: *
+                    <input type="date" id="checkin" name="check-in-date" required />
+                    <button type="button" onclick="startSpeech('checkin')">🎤</button>
+                </label>
+                <label>Check-out Date: *
+                    <input type="date" id="checkout" name="check-out-date" required />
+                    <button type="button" onclick="startSpeech('checkout')">🎤</button>
+                </label>
+            </fieldset>
+            <fieldset>
+                <label>Additional Requests
+                    <textarea id="additional" name="additional" rows="5" cols="30" placeholder="Your message ..."></textarea>
+                    <button type="button" onclick="startSpeech('additional')">🎤</button>
+                </label>
+            </fieldset>
+            <input type="submit" value="Submit" class="submit-btn" />
+        </form>
+    </div>
+
+    <!-- Speech Recognition Script -->
+    <script>
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var recognition = new SpeechRecognition();
+        
+        function startSpeech(fieldId) {
+            recognition.start();
+            recognition.onresult = function (event) {
+                var transcript = event.results[0][0].transcript;
+                document.getElementById(fieldId).value = transcript;
+                console.log("Filled: " + fieldId + " with value: " + transcript);
+            };
+        }
+    </script>
+
+</body>
+
+<!-- Footer -->
+
+<section class="footer">
+    <div class="foot">
+        <div class="footer-content">
+            <div class="footlinks">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="./booking.html">Register</a></li>
+                    <li><a href="./info.html">About Us</a></li>
+                    <li><a href="./contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footlinks">
+                <h4>Connect</h4>
+                <div class="social">
+                    <a href="https://www.facebook.com/profile.php?id=100007787415175" target="_blank"><i class='bx bxl-facebook'></i></a>
+                    <a href="https://www.instagram.com/iamit010/" target="_blank"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://twitter.com/sarcasmit_" target="_blank"><i class='bx bxl-twitter'></i></a>
+                    <a href="https://www.linkedin.com/in/amit-kumar-singh-475b36212/" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                    <a href="https://github.com/iamit010" target="_blank"><i class='bx bxl-github'></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="end">
+        <p>Copyright © 2024 Adventour All Rights Reserved.<br>Website developed by: Rutuja Chavan, Asmita Ahirrao, Shreeja wakchaure</p>
+    </div>
+</section>
+
+</html>     in this code when user book ticket the info should go on another page and user should see their bookings

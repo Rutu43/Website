@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN PAGE</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Add Font Awesome -->
+
+    <style>
+        /* Container styles to ensure proper layout */
+        .container-fluid {
+            position: relative; /* Position relative for absolute positioning of the form */
+            height: 100vh; /* Full viewport height */
+        }
+
+        /* Ensure the video takes full height and width of the container */
+        #myVideo {
+            width: 100%;  
+            height: 100%; 
+            object-fit: cover; /* Cover the container while maintaining aspect ratio */
+        }
+
+        /* Form box styles */
+        .form-box {
+            position: absolute; /* Position it on top of the video */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust position to truly center */
+            background-color: rgba(255, 255, 255, 0.8); /* Increased transparency (0.8) */
+            padding: 30px; /* Padding inside the box */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+            width: 90%; /* Set a max width for the box */
+            max-width: 400px; /* Optional: limit maximum width */
+        }
+
+        /* Form group styles */
+        .form-group {
+            position: relative; /* Position relative for the microphone icon */
+        }
+
+        /* Microphone icon styles */
+        .microphone-icon {
+            position: absolute;
+            right: 10px; /* Position it on the right */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Adjust for true centering */
+            cursor: pointer; /* Change cursor to pointer */
+            color: #007bff; /* Bootstrap primary color */
+        }
+
+        /* Optional: Add some padding to the button */
+        .login-btn {
+            width: 100%; /* Full width button */
+        }
+    </style>
+
+    <script>
+        let recognition;
+        let currentFieldIndex = 0; // Track the current input field index
+        const fields = ['username', 'password']; // Fields to fill
+
+        // Function to start voice recognition
+        function startVoiceRecognition(fieldId) {
+            if ('webkitSpeechRecognition' in window) {
+                recognition = new webkitSpeechRecognition();
+                recognition.lang = 'en-US';
+                recognition.continuous = false;  // Do not keep listening continuously
+                recognition.interimResults = false; // Do not show interim results
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                    console.log("Voice input: " + transcript);
+                    document.getElementById(fieldId).value = transcript; // Fill the current input field with the recognized text
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error detected: ' + event.error);
+                    recognition.stop(); // Stop recognition on error
+                };
+
+                recognition.onend = function() {
+                    console.log('Speech recognition service disconnected');
+                };
+
+                recognition.start(); // Start the recognition
+            } else {
+                alert("Speech recognition is not supported in this browser.");
+            }
+        }
+
+        // Function to speak the placeholder text aloud
+        function speakPlaceholder(placeholder) {
+            const utterance = new SpeechSynthesisUtterance(placeholder);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Autofocus on the username field on page load
+            document.querySelector("#username").focus(); 
+            speakPlaceholder("Phone number, username, or email"); // Speak the placeholder for the first field
+
+            // Attach event listeners to input fields
+            fields.forEach((field) => {
+                document.getElementById(field).addEventListener('focus', function () {
+                    speakPlaceholder(this.placeholder); // Speak the placeholder
+                });
+
+                // Attach click event to microphone icon
+                document.getElementById(field + '-mic').addEventListener('click', () => {
+                    startVoiceRecognition(field); // Start voice recognition for the clicked field
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <video id="myVideo" src="./assets/files/video-1.mp4" type="video/mp4" muted loop></video>
+
+        <script>
+            const video = document.getElementById('myVideo');
+
+            video.addEventListener('loadedmetadata', function() {
+                this.currentTime = 30; // Set to the desired start time in seconds
+            });
+
+            // Ensure that the video plays from the specified time
+            video.addEventListener('timeupdate', function() {
+                // Check if the video has reached the specified start time
+                if (this.currentTime < 96) {
+                    this.currentTime = 96; // Reset to the start time
+                }
+            });
+
+            // Play the video
+            video.play();
+        </script>
+
+        <div class="form-box">
+            <div class="text-center mb-3">
+                <button type="button" class="btn btn-primary btn-block text-white">
+                    <img src="facebook.png" class="w-25 h-25" id="Flogo" alt="Facebook logo"> Log in with Facebook
+                </button>
+                <p class="or">OR</p>
+            </div>
+            <form id="login-form" method="post" action="login.php">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Phone number, username, or email" required>
+                    <span class="microphone-icon" id="username-mic"><i class="fas fa-microphone"></i></span>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                    <span class="microphone-icon" id="password-mic"><i class="fas fa-microphone"></i></span>
+                </div>
+                <button type="submit" class="login-btn btn btn-primary">Log In</button>
+            </form>
+            
+            <div class="text-center">
+                <p>Don't have an account? <a href="sign_up.html">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
